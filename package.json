@@ -5,6 +5,9 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "oma": "./dist/cli/index.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -14,6 +17,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
+    "cli": "tsx src/cli/index.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "tsc --noEmit",
@@ -27,6 +31,9 @@
     "llm",
     "claude",
     "openai",
+    "deepseek",
+    "qwen",
+    "kimi",
     "mcp",
     "tool-use",
     "agent-framework"
@@ -38,12 +45,15 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.52.0",
+    "dotenv": "^16.4.0",
     "openai": "^4.73.0",
     "zod": "^3.23.0"
   },
   "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
     "typescript": "^5.6.0",
-    "vitest": "^2.1.0",
-    "@types/node": "^22.0.0"
+    "vitest": "^2.1.0"
   }
 }
+

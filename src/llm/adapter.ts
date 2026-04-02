@@ -5,12 +5,14 @@
  * {@link createAdapter} factory that returns the correct concrete
  * implementation based on the requested provider.
  *
+ * Supports: Anthropic, OpenAI, DeepSeek, Qwen (DashScope), Kimi, Gemini.
+ *
  * @example
  * ```ts
  * import { createAdapter } from './adapter.js'
  *
  * const anthropic = createAdapter('anthropic')
- * const openai    = createAdapter('openai', process.env.OPENAI_API_KEY)
+ * const deepseek  = createAdapter('deepseek')
  * ```
  */
 
@@ -37,13 +39,25 @@ import type { LLMAdapter } from '../types.js'
  * Additional providers can be integrated by implementing {@link LLMAdapter}
  * directly and bypassing this factory.
  */
-export type SupportedProvider = 'anthropic' | 'openai'
+export type SupportedProvider =
+  | 'anthropic'
+  | 'openai'
+  | 'deepseek'
+  | 'qwen'
+  | 'kimi'
+  | 'gemini'
 
 /**
  * Instantiate the appropriate {@link LLMAdapter} for the given provider.
  *
- * API keys fall back to the standard environment variables
- * (`ANTHROPIC_API_KEY` / `OPENAI_API_KEY`) when not supplied explicitly.
+ * API keys fall back to the standard environment variables when not
+ * supplied explicitly:
+ *   - ANTHROPIC_API_KEY
+ *   - OPENAI_API_KEY
+ *   - DEEPSEEK_API_KEY
+ *   - DASHSCOPE_API_KEY  (Alibaba Qwen)
+ *   - KIMI_API_KEY       (Moonshot Kimi)
+ *   - GOOGLE_AI_API_KEY  (Google Gemini)
  *
  * Adapters are imported lazily so that projects using only one provider
  * are not forced to install the SDK for the other.
@@ -65,8 +79,23 @@ export async function createAdapter(
       const { OpenAIAdapter } = await import('./openai.js')
       return new OpenAIAdapter(apiKey)
     }
+    case 'deepseek': {
+      const { DeepSeekAdapter } = await import('./deepseek.js')
+      return new DeepSeekAdapter(apiKey)
+    }
+    case 'qwen': {
+      const { QwenAdapter } = await import('./qwen.js')
+      return new QwenAdapter(apiKey)
+    }
+    case 'kimi': {
+      const { KimiAdapter } = await import('./kimi.js')
+      return new KimiAdapter(apiKey)
+    }
+    case 'gemini': {
+      const { GeminiAdapter } = await import('./gemini.js')
+      return new GeminiAdapter(apiKey)
+    }
     default: {
-      // The `never` cast here makes TypeScript enforce exhaustiveness.
       const _exhaustive: never = provider
       throw new Error(`Unsupported LLM provider: ${String(_exhaustive)}`)
     }

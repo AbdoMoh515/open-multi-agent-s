@@ -12,8 +12,10 @@ import { fileEditTool } from './file-edit.js'
 import { fileReadTool } from './file-read.js'
 import { fileWriteTool } from './file-write.js'
 import { grepTool } from './grep.js'
+import { securityScanTool } from './security-scan.js'
+import { gitTool } from './git.js'
 
-export { bashTool, fileEditTool, fileReadTool, fileWriteTool, grepTool }
+export { bashTool, fileEditTool, fileReadTool, fileWriteTool, grepTool, securityScanTool, gitTool }
 
 /**
  * The ordered list of all built-in tools.  Import this when you need to
@@ -29,6 +31,8 @@ export const BUILT_IN_TOOLS: ToolDefinition<any>[] = [
   fileWriteTool,
   fileEditTool,
   grepTool,
+  securityScanTool,
+  gitTool,
 ]
 
 /**
@@ -48,3 +52,4 @@ export function registerBuiltInTools(registry: ToolRegistry): void {
     registry.register(tool)
   }
 }
+

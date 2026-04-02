@@ -5,3 +5,4 @@ dist/
 promo-*.md
 non-tech_*/
 Agents.txt
+.env
